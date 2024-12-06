@@ -23,7 +23,7 @@
         }
 
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Roboto', sans-serif; /* Updated Font */
             line-height: 1.6;
             color: var(--text-dark);
             background-color: #f9f9f9;
@@ -53,7 +53,7 @@
             transition: background-color 0.3s;
         }
 
-        nav a:hover {
+        nav a:hover, nav a.active {
             background-color: var(--primary-color);
         }
 
@@ -64,21 +64,24 @@
         }
 
         .hero {
-            background-color: var(--accent-color);
+            background: linear-gradient(
+                rgba(45, 90, 41, 0.8),
+                rgba(45, 90, 41, 0.8)
+              ),
+              url('background.jpg') no-repeat center center/cover; /* Requires image */
             padding: 4rem 1rem;
             text-align: center;
+            color: white;
         }
 
         .hero h1 {
             font-size: 2.5rem;
             margin-bottom: 1rem;
-            color: var(--secondary-color);
         }
 
         .hero p {
             font-size: 1.2rem;
             margin-bottom: 2rem;
-            color: var(--text-light);
         }
 
         .cta-button {
@@ -88,10 +91,11 @@
             color: white;
             text-decoration: none;
             border-radius: 5px;
-            transition: background-color 0.3s;
+            transition: transform 0.3s, background-color 0.3s;
         }
 
         .cta-button:hover {
+            transform: scale(1.1);
             background-color: var(--secondary-color);
         }
 
@@ -111,23 +115,12 @@
             padding: 2rem;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
         }
 
-        .service-card h3 {
-            color: var(--primary-color);
-            margin-bottom: 1rem;
-        }
-
-        .contact-section {
-            background-color: var(--accent-color);
-            padding: 4rem 1rem;
-        }
-
-        .contact-info {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
 
         footer {
@@ -146,6 +139,18 @@
             text-decoration: underline;
         }
 
+        /* Animation Styles */
+        .container {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease-in-out;
+        }
+
+        .container.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         @media (max-width: 768px) {
             .hero h1 {
                 font-size: 2rem;
@@ -161,6 +166,7 @@
             }
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
@@ -175,7 +181,7 @@
             <a href="#services">Services</a>
             <a href="#about">About Us</a>
             <a href="#contact">Contact</a>
-            <a href="#quote.html">Get a Quote</a>
+            <a href="quote.html">Get a Quote</a>
         </div>
     </nav>
 
@@ -193,31 +199,11 @@
             <div class="services-grid">
                 <div class="service-card">
                     <h3>Septic Design</h3>
-                    <p>Custom septic system designs tailored to your property's specific needs, ensuring optimal performance and compliance with local regulations.</p>
+                    <p>Custom septic system designs tailored to your property's specific needs.</p>
                 </div>
                 <div class="service-card">
                     <h3>Title 5 Inspections</h3>
-                    <p>Comprehensive inspections meeting Massachusetts Title 5 requirements for property transfers and system evaluation.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    </section>
-        <div class="container">
-            <h2>Contact Us</h2>
-            <div class="contact-info">
-                <div>
-                    <h3>Office Hours</h3>
-                    <p>Monday - Friday: 8:00 AM - 5:00 PM</p>
-                    <p>Saturday: By appointment</p>
-                    <p>24/7 Emergency Services Available</p>
-                </div>
-                <div>
-                    <h3>Get in Touch</h3>
-                    <p>Phone: (555) 123-4567</p>
-                    <p>Email: info@westernmaseptic.com</p>
-                    <p>Location: Serving all of Western Massachusetts</p>
+                    <p>Comprehensive inspections meeting Massachusetts Title 5 requirements.</p>
                 </div>
             </div>
         </div>
@@ -226,12 +212,45 @@
     <footer>
         <div class="container">
             <p>&copy; 2024 Western MA Septic. All rights reserved.</p>
-            <p>Licensed & Insured | MA License #12345</p>
-            <p>
-                <a href="mailto:info@westernmaseptic.com">info@westernmaseptic.com</a> | 
-                <a href="tel:5551234567">(555) 123-4567</a>
-            </p>
         </div>
     </footer>
+
+    <script>
+        // Highlight Active Section in Nav
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('nav a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 60) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Scroll Animation
+        const containers = document.querySelectorAll('.container');
+
+        const showOnScroll = () => {
+            containers.forEach(container => {
+                const top = container.getBoundingClientRect().top;
+                if (top < window.innerHeight) {
+                    container.classList.add('visible');
+                }
+            });
+        };
+
+        window.addEventListener('scroll', showOnScroll);
+        showOnScroll();
+    </script>
 </body>
 </html>
