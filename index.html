@@ -211,7 +211,20 @@
                 grid-template-columns: 1fr;
             }
         }
+        @media (max-width: 600px) {
+            nav {
+                padding: 0.5rem;
+            }
 
+            nav div {
+                gap: 0.5rem;
+            }
+
+            nav a {
+                font-size: 0.875rem;
+                padding: 0.25rem 0.5rem;
+            }
+        }
         @keyframes titleFloat {
             0%, 100% {
                 transform: translateY(0) scale(1);
